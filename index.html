@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cuca Pizza Bar - Delivery Premium</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --wine-dark: #3a0303;
+            --wine-primary: #5c0a0a;
+            --gold-primary: #c5a059;
+            --gold-dark: #a6813d;
+            --cream-bg: #fdfaf5;
+            --cream-card: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--cream-bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--cream-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+
+        nav.scrolled {
+            background: rgba(58, 3, 3, 0.98);
+            padding: 0.8rem 5%;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--gold-primary);
+            font-size: 1.8rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);
+            opacity: 0.8;
+        }
+
+        .nav-menu a:hover { opacity: 1; color: var(--gold-primary); }
+
+        .btn-cart-trigger {
+            background: var(--gold-primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 100px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-cart-trigger:hover { background: var(--gold-dark); transform: scale(1.02); }
+
+        .cart-badge {
+            background: var(--wine-dark);
+            font-size: 0.7rem;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2000') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 10vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            max-width: 700px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .cta-main {
+            padding: 18px 50px;
+            background: var(--gold-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.4);
+            transition: var(--transition);
+        }
+
+        .cta-main:hover { transform: translateY(-5px); background: var(--gold-dark); }
+
+        /* --- Sections Layout --- */
+        section { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
+
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 3.5rem; color: var(--wine-dark); margin-bottom: 10px; }
+        .section-header .line { width: 60px; height: 3px; background: var(--gold-primary); margin: 0 auto; }
+
+        /* --- Categories --- */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        .category-filter::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            padding: 12px 28px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--wine-dark);
+            color: var(--white);
+            border-color: var(--wine-dark);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- Menu Grid --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--cream-card);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-md); }
+
+        .product-img-wrapper { height: 240px; overflow: hidden; position: relative; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .product-card:hover .product-img { transform: scale(1.1); }
+
+        .product-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .product-body h3 { font-size: 1.6rem; color: var(--wine-dark); margin-bottom: 10px; }
+        .product-body p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; flex: 1; }
+
+        .product-footer { display: flex; justify-content: space-between; align-items: center; }
+        .price-tag { font-weight: 800; color: var(--wine-primary); font-size: 1.1rem; }
+
+        .btn-add {
+            width: 44px;
+            height: 44px;
+            background: var(--cream-bg);
+            border: 2px solid var(--wine-dark);
+            color: var(--wine-dark);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn-add:hover { background: var(--wine-dark); color: white; }
+
+        /* --- Gallery --- */
+        .gallery-wrap {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .gallery-item {
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .gallery-item:hover img { transform: scale(1.1); filter: brightness(0.7); }
+        .gallery-item i {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; opacity: 0; transition: var(--transition);
+        }
+        .gallery-item:hover i { opacity: 1; }
+
+        /* --- Location --- */
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            background: white;
+            padding: 50px;
+            border-radius: 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .map-frame {
+            border-radius: 30px;
+            overflow: hidden;
+            height: 450px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .location-text h3 { font-size: 2.5rem; color: var(--wine-dark); margin-bottom: 25px; }
+        .loc-item { display: flex; gap: 20px; margin-bottom: 30px; }
+        .loc-item i { color: var(--gold-primary); flex-shrink: 0; }
+        .loc-item p strong { display: block; font-size: 1.1rem; color: var(--wine-dark); }
+
+        /* --- Cart Drawer --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 450px;
+            height: 100vh;
+            background: var(--white);
+            z-index: 2000;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.15);
+            transition: right 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.active { right: 0; }
+
+        .drawer-header {
+            padding: 30px;
+            background: var(--wine-dark);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawer-body { flex: 1; overflow-y: auto; padding: 30px; }
+        
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f5f5f5;
+            padding: 6px 12px;
+            border-radius: 100px;
+        }
+
+        .qty-btn { border: none; background: none; cursor: pointer; font-weight: bold; color: var(--wine-dark); padding: 5px; }
+
+        .drawer-footer {
+            padding: 30px;
+            background: var(--cream-bg);
+            border-top: 1px solid #eee;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--wine-dark);
+            margin-bottom: 25px;
+        }
+
+        .checkout-form .input-group { margin-bottom: 15px; }
+        .checkout-form label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
+        .checkout-form input, .checkout-form select, .checkout-form textarea {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; font-size: 0.95rem;
+        }
+
+        .btn-finish {
+            width: 100%;
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+        .btn-finish:hover { background: #1da851; transform: scale(1.02); }
+
+        /* --- Modals --- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .size-selection { display: grid; gap: 15px; margin-top: 30px; }
+        .size-opt {
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        .size-opt:hover { border-color: var(--gold-primary); background: var(--cream-bg); }
+
+        /* --- Toast --- */
+        #toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--wine-dark);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 100px;
+            z-index: 4000;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 992px) {
+            .location-grid { grid-template-columns: 1fr; }
+            .gallery-wrap { grid-template-columns: repeat(2, 1fr); }
+            .nav-menu { display: none; } /* Could add hamburger here */
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 3.5rem; }
+            .section-header h2 { font-size: 2.5rem; }
+            .drawer { width: 100%; }
+            section { padding: 60px 5%; }
+            .location-grid { padding: 30px 20px; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .product-img-wrapper { height: 200px; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        /* Float WPP Button */
+        .wpp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(37,211,102,0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .wpp-float:hover { transform: scale(1.1); }
+        .wpp-float svg { width: 35px; height: 35px; fill: white; }
+
+    </style>
+</head>
+<body>
+
+    <nav id="main-nav">
+        <a href="#" class="logo font-serif">
+            <i data-lucide="chef-hat"></i>
+            <span>CUCA</span>
+        </a>
+        <div class="nav-menu">
+            <a href="#">Início</a>
+            <a href="#cardapio">Menu</a>
+            <a href="#galeria">Galeria</a>
+            <a href="#localizacao">Visite-nos</a>
+        </div>
+        <button class="btn-cart-trigger" onclick="toggleDrawer()">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+    </nav>
+
+    <header class="hero">
+        <h1 class="font-serif italic">Artesanal & <br>Memorável.</h1>
+        <p>A experiência da verdadeira pizza italiana no coração de Campinas. Desde 1996 servindo paixão em cada fatia.</p>
+        <a href="#cardapio" class="cta-main">Explorar Cardápio</a>
+    </header>
+
+    <section id="cardapio">
+        <div class="section-header">
+            <h2>Nossa Seleção</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="category-filter">
+            <button class="cat-btn active" onclick="filterMenu('all', this)">Tudo</button>
+            <button class="cat-btn" onclick="filterMenu('tradicional', this)">Tradicionais</button>
+            <button class="cat-btn" onclick="filterMenu('especial', this)">Especiais</button>
+            <button class="cat-btn" onclick="filterMenu('doce', this)">Doces</button>
+            <button class="cat-btn" onclick="filterMenu('bebida', this)">Bebidas</button>
+        </div>
+
+        <div class="menu-grid" id="menu-container">
+            <!-- Dynamically Rendered -->
+        </div>
+    </section>
+
+    <section id="galeria" style="background: #fdfdfd;">
+        <div class="section-header">
+            <h2>Momentos Cuca</h2>
+            <div class="line"></div>
+        </div>
+        <div class="gallery-wrap">
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600" alt="Pizza"><i data-lucide="instagram"></i></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600" alt="Forno"><i data-lucide="instagram"></i></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?w=600" alt="Massa"><i data-lucide="instagram"></i></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=600" alt="Vinho"><i data-lucide="instagram"></i></div>
+        </div>
+    </section>
+
+    <section id="localizacao">
+        <div class="section-header">
+            <h2>Onde nos Encontrar</h2>
+            <div class="line"></div>
+        </div>
+        <div class="location-grid">
+            <div class="location-text">
+                <h3 class="font-serif">No coração do Cambuí</h3>
+                <div class="loc-item">
+                    <i data-lucide="map-pin"></i>
+                    <p><strong>Endereço Oficial</strong> Rua Américo Brasiliense, 306 <br> Cambuí, Campinas - SP</p>
+                </div>
+                <div class="loc-item">
+                    <i data-lucide="clock"></i>
+                    <p><strong>Horários</strong> Terça a Domingo <br> 18:00 às 23:30</p>
+                </div>
+                <div class="loc-item">
+                    <i data-lucide="phone"></i>
+                    <p><strong>Contato Direto</strong> (19) 99627-1107</p>
+                </div>
+            </div>
+            <div class="map-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.297491757134!2d-47.051515223788775!3d-22.89503353713606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8cf4c8f5951d3%3A0xc3670f5e7f12a32!2sR.%20Am%C3%A9rico%20Brasiliense%2C%20306%20-%20Cambu%C3%AD%2C%20Campinas%20-%20SP%2C%2013024-500!5e0!3m2!1spt-BR!2sbr!4v1715638100000" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: var(--wine-dark); color: white; padding: 60px 5% 30px; text-align: center;">
+        <div class="font-serif" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 20px;">CUCA</div>
+        <p style="opacity: 0.7; max-width: 500px; margin: 0 auto 40px;">Desde 1996, unindo a tradição italiana com o paladar brasileiro em um ambiente inesquecível no Cambuí.</p>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; font-size: 0.8rem; opacity: 0.5;">
+            © 2024 Cuca Pizza Bar - Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div class="drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h3 class="font-serif" style="font-size: 1.8rem;">Seu Pedido</h3>
+            <button style="background: none; border: none; color: white; cursor: pointer;" onclick="toggleDrawer()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-body" id="cart-items">
+            <!-- Items -->
+        </div>
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="total-price">R$ 0,00</span>
+            </div>
+            <div class="checkout-form">
+                <div class="input-group">
+                    <label>NOME</label>
+                    <input type="text" id="cust-name" placeholder="Seu nome">
+                </div>
+                <div class="input-group">
+                    <label>ENDEREÇO</label>
+                    <textarea id="cust-addr" rows="2" placeholder="Rua, n°, bairro..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>PAGAMENTO</label>
+                    <select id="cust-pay">
+                        <option value="Pix">Pix</option>
+                        <option value="Cartão (Maquininha)">Cartão (Entregador)</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-finish" onclick="sendWhatsApp()">
+                <i data-lucide="send"></i> Finalizar no WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Size Selection Modal -->
+    <div class="modal" id="size-modal">
+        <div class="modal-content">
+            <h3 class="font-serif" id="modal-title" style="font-size: 2.2rem; margin-bottom: 10px;">Escolha o Tamanho</h3>
+            <p id="modal-desc" style="color: var(--text-muted); margin-bottom: 30px;">Selecione uma das opções abaixo:</p>
+            <div class="size-selection" id="size-options">
+                <!-- Options -->
+            </div>
+            <button class="cat-btn" style="width: 100%; margin-top: 20px;" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Icon -->
+    <div class="wpp-float" onclick="window.open('https://wa.me/5519996271107')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.001 12.045a11.871 11.871 0 001.592 5.96L0 24l6.117-1.605a11.803 11.803 0 005.925 1.586h.005c6.635 0 12.046-5.411 12.049-12.047a11.815 11.815 0 00-3.524-8.513"/>
+        </svg>
+    </div>
+
+    <div id="toast">Adicionado com sucesso!</div>
+
+    <script>
+        const menuData = [
+            { id: 1, name: "Mussarela", desc: "Mussarela premium, molho de tomate pelati e orégano chileno.", cat: "tradicional", prices: { Grande: 76.9, Media: 67.9, Broto: 49.9 }, img: "https://images.unsplash.com/photo-1573452330276-917734bc14f8?w=600" },
+            { id: 2, name: "Marguerita", desc: "Mussarela, rodelas de tomate fresco, manjericão e parmesão.", cat: "tradicional", prices: { Grande: 76.9, Media: 67.9, Broto: 49.9 }, img: "https://images.unsplash.com/photo-1574071318508-1cdbad80ad38?w=600" },
+            { id: 3, name: "Calabresa", desc: "Calabresa artesanal, cebola roxa em anéis e azeitonas pretas.", cat: "tradicional", prices: { Grande: 76.9, Media: 67.9, Broto: 49.9 }, img: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600" },
+            { id: 4, name: "À Moda Don Cuca", desc: "Lombo canadense, catupiry original, tomate e parmesão.", cat: "especial", prices: { Grande: 79.9, Media: 69.9, Broto: 49.9 }, img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600" },
+            { id: 5, name: "Frango c/ Catupiry", desc: "Peito de frango desfiado temperado com o legítimo Catupiry.", cat: "especial", prices: { Grande: 79.9, Media: 69.9, Broto: 49.9 }, img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600" },
+            { id: 6, name: "Chocolate Brigadeiro", desc: "Chocolate ao leite derretido com granulado belga.", cat: "doce", prices: { Broto: 49.9 }, img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600" },
+            { id: 10, name: "Coca-Cola 2L", desc: "Gelada, tamanho família.", cat: "bebida", price: 15.9, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600" },
+            { id: 11, name: "Heineken 600ml", desc: "Cerveja premium super gelada.", cat: "bebida", price: 19.9, img: "https://images.unsplash.com/photo-1618885472179-5e474019f2a9?w=600" }
+        ];
+
+        let cart = [];
+
+        function formatBRL(v) { return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+        });
+
+        function renderMenu(items) {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = items.map(item => `
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="${item.img}" class="product-img" loading="lazy">
+                    </div>
+                    <div class="product-body">
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                        <div class="product-footer">
+                            <span class="price-tag">${item.prices ? 'Desde ' + formatBRL(Math.min(...Object.values(item.prices))) : formatBRL(item.price)}</span>
+                            <button class="btn-add" onclick="handleProductClick(${item.id})">
+                                <i data-lucide="plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterMenu(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMenu(cat === 'all' ? menuData : menuData.filter(i => i.cat === cat));
+        }
+
+        function toggleDrawer() { document.getElementById('cart-drawer').classList.toggle('active'); }
+
+        function handleProductClick(id) {
+            const item = menuData.find(i => i.id === id);
+            if (!item.prices) { addToCart(item, null, item.price); return; }
+            
+            const modal = document.getElementById('size-modal');
+            const opts = document.getElementById('size-options');
+            document.getElementById('modal-title').innerText = item.name;
+            opts.innerHTML = Object.entries(item.prices).map(([size, price]) => `
+                <div class="size-opt" onclick="addToCartById(${id}, '${size}', ${price})">
+                    <span>${size}</span>
+                    <span>${formatBRL(price)}</span>
+                </div>
+            `).join('');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('size-modal').style.display = 'none'; }
+
+        function addToCartById(id, size, price) {
+            const item = menuData.find(i => i.id === id);
+            addToCart(item, size, price);
+            closeModal();
+        }
+
+        function addToCart(item, size, price) {
+            const uid = size ? `${item.id}-${size}` : `${item.id}`;
+            const exist = cart.find(i => i.uid === uid);
+            if (exist) { exist.qty++; } 
+            else { cart.push({ uid, name: item.name, size, price, qty: 1 }); }
+            updateUI();
+            showToast();
+        }
+
+        function changeQty(uid, delta) {
+            const item = cart.find(i => i.uid === uid);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) cart = cart.filter(i => i.uid !== uid);
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            const list = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const total = document.getElementById('total-price');
+            
+            if (cart.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding: 40px; color:#999;"><i data-lucide="shopping-cart" style="width:50px; height:50px; margin-bottom:10px;"></i><p>Carrinho vazio</p></div>';
+            } else {
+                list.innerHTML = cart.map(i => `
+                    <div class="cart-item">
+                        <div style="flex:1">
+                            <h4 style="font-size:1rem;">${i.name} ${i.size ? '('+i.size+')' : ''}</h4>
+                            <span style="color:var(--gold-dark); font-weight:700;">${formatBRL(i.price)}</span>
+                        </div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="changeQty('${i.uid}', -1)">-</button>
+                            <span>${i.qty}</span>
+                            <button class="qty-btn" onclick="changeQty('${i.uid}', 1)">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const finalTotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+            badge.innerText = cart.reduce((acc, i) => acc + i.qty, 0);
+            total.innerText = formatBRL(finalTotal);
+            lucide.createIcons();
+        }
+
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 2500);
+        }
+
+        function sendWhatsApp() {
+            const name = document.getElementById('cust-name').value;
+            const addr = document.getElementById('cust-addr').value;
+            if (!name || !addr || cart.length === 0) { alert("Preencha seu nome, endereço e adicione itens!"); return; }
+
+            let total = 0;
+            let itemsStr = cart.map(i => {
+                total += i.price * i.qty;
+                return `*${i.qty}x ${i.name}* ${i.size ? '(_'+i.size+'_)' : ''} - ${formatBRL(i.price * i.qty)}`;
+            }).join('\n');
+
+            const msg = `🍕 *NOVO PEDIDO - CUCA PIZZA BAR*\n\n` +
+                        `👤 *Cliente:* ${name}\n` +
+                        `📍 *Endereço:* ${addr}\n` +
+                        `💳 *Pagamento:* ${document.getElementById('cust-pay').value}\n\n` +
+                        `🛒 *Itens:*\n${itemsStr}\n\n` +
+                        `💰 *Total:* ${formatBRL(total)}\n\n` +
+                        `🚚 _Frete será calculado na conversa._`;
+
+            window.open(`https://wa.me/5519996271107?text=${encodeURIComponent(msg)}`);
+        }
+
+        // Init
+        renderMenu(menuData);
+        lucide.createIcons();
+    </script>
+</body>
+</html>
